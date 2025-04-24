@@ -1,0 +1,21 @@
+[Unit]
+Description=Webcam Stream Service
+After=network.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+Group=video
+# Load environment variables from config file
+EnvironmentFile=/etc/webcam-stream.conf
+ExecStart=/usr/local/bin/stream-webcam.sh
+Restart=always
+RestartSec=5
+StartLimitInterval=0
+
+# Watch for device changes (Optional: May not be needed if script handles it)
+# ExecStartPre=/bin/sh -c 'while [ ! -e /dev/video0 ]; do sleep 1; done'
+
+[Install]
+WantedBy=multi-user.target 

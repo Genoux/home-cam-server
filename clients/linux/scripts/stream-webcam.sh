@@ -133,26 +133,15 @@ while true; do
         continue
     fi
 
-    # Check for available devices
-    if ! check_video_devices; then
-        write_log "No camera found. Retrying in 5 seconds..."
-        sleep 5
-        continue
-    fi
+    # Set the camera device directly based on v4l2-ctl output
+    CAMERA_DEVICE="/dev/video0"
+    write_log "Attempting to use camera device: $CAMERA_DEVICE"
 
-    # Find the first working camera
-    CAMERA_DEVICE=""
-    for device in /dev/video*; do
-        if test_video_device "$device"; then
-            CAMERA_DEVICE="$device"
-            break
-        fi
-    done
-
-    if [ -z "$CAMERA_DEVICE" ]; then
-        write_log "No working camera found. Retrying in 5 seconds..."
-        sleep 5
-        continue
+    # Check if the specific device exists
+    if [ ! -e "$CAMERA_DEVICE" ]; then
+        write_log "Configured camera device $CAMERA_DEVICE does not exist! Retrying in 10 seconds..."
+        sleep 10
+        continue # Skip to the next iteration of the main while loop
     fi
 
     # Stop any existing streams

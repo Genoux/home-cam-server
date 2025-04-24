@@ -6,14 +6,14 @@ services:
     container_name: home_cam_server
     restart: unless-stopped
     ports:
-      - "1936:1935"  # RTMP server (external:internal)
+      - 1936:1935 # RTMP server (external:internal)
     environment:
       - NODE_ENV=production
     volumes:
       - ./media:/app/media
-    networks:
-      - automation-network
+networks: {}
 
-networks:
-  automation-network:
-    external: true 
+# Removed top-level networks definition
+# networks:
+#  automation-network:
+#    external: true 

@@ -23,6 +23,17 @@ export function setupStreamServer(): NodeMediaServer {
       port: 8001,
       allow_origin: '*',
       mediaroot: mediaDir
+    },
+    trans: {
+      ffmpeg: process.env.FFMPEG_PATH || '/usr/bin/ffmpeg',
+      tasks: [
+        {
+          app: 'live',
+          hls: true,
+          hlsFlags: '[hls_time=5:hls_list_size=60:hls_flags=delete_segments]',
+          hlsKeep: false
+        }
+      ]
     }
   };
 

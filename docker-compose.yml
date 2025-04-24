@@ -1,0 +1,19 @@
+services:
+  home-cam-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: home_cam_server
+    restart: unless-stopped
+    ports:
+      - "1936:1935"  # RTMP server (external:internal)
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./media:/app/media
+    networks:
+      - automation-network
+
+networks:
+  automation-network:
+    external: true 
